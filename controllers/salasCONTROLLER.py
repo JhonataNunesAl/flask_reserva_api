@@ -16,7 +16,8 @@ def create_sala():
     try:
         adicionar_sala(nova_sala)
         return jsonify(nova_sala), 201
-    except Exception as e:
+    
+    except SalaNaoEncontrado as e:
         return jsonify({"erro": str(e)}), 400
 
 
@@ -30,8 +31,8 @@ def update_sala(id_sala):
             atualizar_sala(id_sala, data)
             
             return jsonify(data),200
-        except SalaNaoEncontrado:
-            return jsonify({'message': 'Sala não encontrado'}), 404
+        except SalaNaoEncontrado as e:
+            return jsonify({'message': str(e)}), 404
    
 @salas_blueprint.route('/salas/<int:id_sala>', methods=['DELETE'])
 def delete_sala(id_sala):

@@ -34,7 +34,13 @@ def sala_por_id(id_sala):
     return sala.to_dict()
 
 def adicionar_sala(nova_sala):
-    nova_sala = Salas(        
+    turma_id=int(nova_sala['turma_id'])
+    salas = Salas.query.all()
+    for sala in salas:
+        if sala.turma_id == nova_sala['turma_id'] and sala.aula == nova_sala['aula']:
+            raise SalaNaoEncontrado(f'Sala já existe para a turma {nova_sala["turma_id"]} na aula {nova_sala["aula"]}.')
+    
+    nova_sala = Salas(
         turma_id=int(nova_sala['turma_id']),
         aula=nova_sala['aula']       
     )
@@ -47,6 +53,11 @@ def atualizar_sala(id_sala, nova_sala):
     sala = Salas.query.get(id_sala)
     if not sala:
         raise SalaNaoEncontrado
+    
+    salas = Salas.query.all()
+    for sala_for in salas:
+        if sala_for.turma_id == nova_sala['turma_id'] and sala_for.aula == nova_sala['aula']:
+            raise SalaNaoEncontrado(f'Sala já existe para a turma {nova_sala["turma_id"]} na aula {nova_sala["aula"]}.')
 
     sala.aula = nova_sala['aula']
     sala.turma_id = nova_sala['turma_id']
