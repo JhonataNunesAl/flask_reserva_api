@@ -1,6 +1,4 @@
-from datetime import datetime, date
 from config import db
-
 
 class SalaNaoEncontrado(Exception):
     pass
